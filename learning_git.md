@@ -33,7 +33,7 @@ note:请注意，git diff 本身只显示尚未暂存的改动，而不是自上
   所以有时候你一下子暂存了所有更新过的文件后，运行 git diff 后却什么也没有，就是这个原因。
 
 
-Q:git rm[parameters can be file,path or regular expression.]
+Q:git rm[parameters can be file,path or regular express.]
 -----------
 A:把文件从暂存区中移除(工作区中的也删除);此命令后git commit即可将文件从Git中移除(本地目录)
 git rm --cached 将文件只从暂存区中删除，工作区中的保留。
@@ -44,7 +44,3 @@ Q:git mv
 A: 相当于以下三条命令：mv ,git rm ,git add  
 
 
-Q:如何查看提交历史？每次提交了多少代码？以及提交的具体代码？dahai最近两次提交代码的详细信息？
-------------------------------------------------------------
-A:git log ，git log --stat ,git log -p [number]
-   git log --author dahai -p 2

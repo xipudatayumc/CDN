@@ -42,3 +42,23 @@ git rm --cached 将文件只从暂存区中删除，工作区中的保留。
 Q:git mv
 ---------
 A: 相当于以下三条命令：mv ,git rm ,git add  
+
+Q:文件提交到本地后，发现有的文件漏提交了，如何补提交？或者如何修改上一次commit 的message信息？
+---------------------------------------------
+A: git commit --amend,会将暂存区中的内容提交，如果暂存区中没有要commit到本地的内容，则只会修改message信息。
+
+
+Q:如何撤消暂存区(staged)的文件修改，即取消文件的staged状态改为modified？撤消工作区中文件的修改？
+--------------------------
+A: git reset HEAD <file>, git checkout -- <file>
+note: git status会有提示，git reset HEAD <file>是一个非常危险的操作，有可能丢失本地修改！！！
+
+
+Q:git push origin master中origin,master的含义？
+------------------------
+A: orgin是远程仓库的简写，如https://github.com/xipudatayumc/CDN.git；master是远程仓库中的哪个branch；
+即把内容push到远程仓库origin的master分支,在git clone时若不指定远程仓库简写，则其default name 为origin；
+
+
+Q:如何查看需要读写远程仓库使用的Git保存的简写与其对应的URL?
+-----------------------------------

@@ -172,3 +172,30 @@ Q:如何查看当前分支(既HEAD指针指向哪？)以及每一个branch point
 A: git log --oneline --decorate;
 
 
+Q:git如何创建、检出、查看、删除、合并branch，合并冲突时如何解决conflict?
+----------
+
+Q:下面是git log --oneline --graph --all的输出，对其信息作出解释？
+A:
+*   51f96d4 (HEAD -> learning, origin/learning, merged) merged test branch!
+|\
+| * c52addf (origin/test, test) just a test!additonal commit.
+| *   d8daff7 wMerge branch 'test' of https://github.com/xipudatayumc/CDN into test
+| |\
+| | * e8411ba modify README.md and learning_file!
+| * | 160783a modify README.md and learning_file,just a test!
+| |/
+* | a9a97f4 add some contents of chapter3!
+* | bc0b46b (tag: v0.1-lw, tag: v0.1) add notes of pro git 2.3 and 2.4
+* | 8c2936f add some basic contents of pro git 2.1 and 2.2.
+|/
+* 78170e2 (tag: show, origin/master, origin/HEAD, master) Create a file to record my learning in Git.
+* 207fcb6 Initial commit
+
+
+Q:如何查看当前branch合并了哪些分支？
+-------------
+A: git branch --merged
+
+
+

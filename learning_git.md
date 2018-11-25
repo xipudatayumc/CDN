@@ -43,6 +43,7 @@ Q:git mv
 ---------
 A: 相当于以下三条命令：mv ,git rm ,git add  
 
+
 Q:文件提交到本地后，发现有的文件漏提交了，如何补提交？或者如何修改上一次commit 的message信息？
 ---------------------------------------------
 A: git commit --amend,会将暂存区中的内容提交，如果暂存区中没有要commit到本地的内容，则只会修改message信息。
@@ -169,13 +170,5 @@ A:It keeps a special pointer called <<HEAD>>,it is a pointer to the <<LOCAL BRAN
 Q:如何查看当前分支(既HEAD指针指向哪？)以及每一个branch pointer指向哪个commit?
 ------------
 A: git log --oneline --decorate;
-
-
-
-
-
-
-
-
 
 

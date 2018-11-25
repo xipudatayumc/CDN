@@ -62,3 +62,120 @@ A: orgin是远程仓库的简写，如https://github.com/xipudatayumc/CDN.git；
 
 Q:如何查看需要读写远程仓库使用的Git保存的简写与其对应的URL?
 -----------------------------------
+A:git remote -v
+
+
+Q:如何查看本地、远程、所有branch列表？
+---------------------
+A: git branch -v(v) \ git branch -r -v(v) \git branch -a -v(v),以下是git branch -a -v的显示信息：
+
+* learning                bc0b46b add notes of pro git 2.3 and 2.4
+  master                  78170e2 Create a file to record my learning in Git.
+  test                    c52addf just a test!additonal commit.
+  remotes/origin/HEAD     -> origin/master
+  remotes/origin/learning bc0b46b add notes of pro git 2.3 and 2.4
+  remotes/origin/master   78170e2 Create a file to record my learning in Git.
+  remotes/origin/test     c52addf just a test!additonal commit.
+其中前三个显示的是本地分支，后面的是remote分支。
+
+
+Q:When you have your project at a point that you want to share,you have to push it to upstream,how to do it?
+-----------------------------
+A:git push [remote-name] [branch-name],如git push origin master
+
+
+Q:When you want to get more information about remote repository,how to do it?
+-------------------------
+A:git remote show [remote-name]
+
+
+Q:How to rename a remote repository` shortname?For instance,you want to rename pb to paul,how to do it?
+----------------
+A:To rename a remote repository`s shortname,you can run git remote rename .For instance, git remote rename sb paul.
+This changes all your remote-tracking branches ,too.What used to be referenced at pb/master is now at paul/master.
+
+
+Q:如果要使用新的远程code mirror(remote repository name 变了)，应如何做？
+----------------------
+A:首先remove老的远程仓库，然后添加新的远程仓库即可；
+git remote rm old_name; git remote add short_name repository_name.
+
+
+Q:Which types of tags does Git supports?
+---------------
+A:lightweight and annotated.A lightweight tag is very much like a branch that doesn`t change--it just 
+like a pointer to a specific commit.Annotated tags,however,are stored as full objects in the Git database.
+
+
+Q:如何列出tags(只显示tag列表，不显示提交信息)?列出v0.1.*相关的tag?同时显示tag信息和commit信息？
+------------------
+A:(1)git tag(tag是按字母顺序列出的，不是时间顺序);    
+(2) git tag -l v0.1.*;                           (3) git show [tag_name].
+
+
+Q:How to create annotated tags and lightweight tags?
+----------------
+A:Creating a annotated tag:  git tag -a [tag_name] -m'message';     Creating a lightweight tag:git tag [tag_name];
+(Any parameters isNOT necessitated for a lightweight tag.)
+
+
+Q:How to create a tag for a specific commit?
+------------------
+A: git tag -a [tag_name] [commitid];
+
+
+Q:How to share your tags?
+-----------
+A:默认情况下，git push 命令并不会传送标签到远程仓库服务器上。 在创建完标签后你必须显式地推送标签到共享服务器上。
+git push origin [tagname]
+Note:如果想要一次性推送很多标签，也可以使用带有 --tags 选项的 git push 命令。 这将会把所有不在远程仓库服务器上的
+标签全部传送到那里。
+
+
+Q:如何删除本地tag\远程tag?
+------------
+A:
+因为创建的标签都只存储在本地，不会自动推送到远程。所以，打错的标签可以在本地安全删除。
+如何要删除一个remote tag，则应先在本地删除,git tag -d [tag_name];
+然后删除远程的tag，git push origin :ref/tags/tag_name
+
+
+Q:当做commit操作时，git保存什么？
+----------------
+A:When you make a commit,Git stores a commit object that contains a pointer to the snapshot of the content you 
+<<staged>>.This object also contains the author`s name and email address,the message that you typed, and pointers 
+to the commit or commits that directly came before this commit(its parent or parents):zero parents for initial commit,
+one parent for a normal commit,and multiple parents for a commit that result from a merge of two or more branches.
+
+
+Q:一个branch在git中可理解成什么？
+--------------
+A:A branch in Git is simply a lightweight pointer to one of commits.The default branch name in Git is master.As you 
+start making commits,you are given a master branch that points to the last commit you made.Every time you commit,the
+master branch moved automatically.
+
+
+Q:git中如何新建branch?branch既然是一个movable pointer,那么新建的分支point to___?
+------------------
+A:git branch [branch_name];  This create a new pointer to the same commit you`re currently on.
+The git branch command only created a new branch--It DOESNOT SWITCH TO THAT BRANCH!!!
+
+
+Q:How does Git know what branch you`re currently on?
+-----------------
+A:It keeps a special pointer called <<HEAD>>,it is a pointer to the <<LOCAL BRANCH>> you`re currently on.
+
+
+Q:如何查看当前分支(既HEAD指针指向哪？)以及每一个branch pointer指向哪个commit?
+------------
+A: git log --oneline --decorate;
+
+
+
+
+
+
+
+
+
+

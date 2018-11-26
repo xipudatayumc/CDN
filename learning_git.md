@@ -1,5 +1,11 @@
-WorkSpace---------Temporary Storage--------Local Repository--------Remote Repository
+(1)WorkSpace---------Temporary Storage--------Local Repository--------Remote Repository
 --------------------------------------------------------------------------------------------
+
+(2)local branch\remote branch\tracking branch的概念？本地分支和跟踪分支的区别与联系？
+
+(3)如何在本地显示远程分支？建立跟踪分支？将本地分支push到远程？以及删除远程分支？
+
+
 
 >FAQ:
 ------
@@ -174,6 +180,7 @@ A: git log --oneline --decorate;
 
 Q:git如何创建、检出、查看、删除、合并branch，合并冲突时如何解决conflict?
 ----------
+A:
 
 Q:下面是git log --oneline --graph --all的输出，对其信息作出解释？
 A:
@@ -193,9 +200,59 @@ A:
 * 207fcb6 Initial commit
 
 
-Q:如何查看当前branch合并了哪些分支？
+Q:如何查看当前branch合并了哪些分支？以及还有哪些<<LOCAL>> branch未合并到当前分支？
 -------------
 A: git branch --merged
+
+
+Q:git merge合并branch时，合并的是本地还是远程的分支?
+------------------
+A:当你在使用分支及合并的时候，一切都是在你自己的 Git 仓库中进行的 — 完全不涉及与服务器的交互。
+
+
+Q:git clone -o name URL 的含义？
+--------------
+
+
+Q:git push origin serverfix:awesomebranch(refs/heads/serverfix:refs/heads/awesomebranch)含义？
+--------------
+A:将本地的serverfix分支push到远程，其分支名为awesomebranch
+
+
+Q:如何将远程有而本地没有的数据同步到本地？(如别人push了一个新的分支到远程，如何将其取到本地？)
+------------
+A:git fetch [remote_name],如git fetch origin;
+
+
+Q:说明拥有多个远程分支(在不同的服务器上)的项目是如何工作的？
+----------
+
+
+Q:git fetch 做什么工作？通过git fetch获取到的远程分支是否可以直接合并到当前分支？是否可以直接编辑？
+----------
+A:值得注意的是，在 fetch 操作下载好新的远程分支之后，你仍然无法在本地编辑该远程仓库中的分支。
+  换句话说，在本例中，你不会有一个新的 serverfix 分支，有的只是一个你无法移动的 origin/serverfix 指针。
+可以通过git merge origin/serverfix合并到当前分支，如果需要在此基础上做开发，需要通过checkout建立该远程分支的跟踪分支
+(tracking branch)  git checkout -b serverfix origin/serverfix
+
+
+Q:如何删除一个远程分支？
+------
+A:git push [远程名]:[branch_name],即把本地的空白分支，推送到远程作为branch_name分支。 
+
+
+Q:使用rebase时，应注意什么(什么情况下不应该用rebase操作)？
+-----------
+A:一旦分支中的提交对象发布到公共仓库，就千万不要对该分支进行衍合操作。
+When you rebase stuff,you`re abandoning existing commits and createing new ones that are similar buf different.
+If you push commits somewhere and others pull them down and base work on them,and then you rewrite those commits
+with git rebase and push them up again,you collaborators will have to re-merge their work and things will get messy
+when you try to pull their work back into yours.
+
+
+Q:当执行git checkout experiment; git rebase master;git checkout master;git merge experiment命令时做什么操作？
+-------------
+A: rebase master,即重新以master为基(即把当前进程合并到master进程，又作为其一个子集了)
 
 
 

@@ -255,4 +255,6 @@ Q:当执行git checkout experiment; git rebase master;git checkout master;git me
 A: rebase master,即重新以master为基(即把当前进程合并到master进程，又作为其一个子集了)
 
 
-
+Q:通过git rebase让提交者解决conflict，而不是让code maintainer去解决?
+--------
+A:

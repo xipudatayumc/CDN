@@ -50,6 +50,8 @@ git remote show origin
   remotes/origin/master 7ea67db Initial commit
 
 (18)git 删除远程branch,git push origin --delete branch_name 
+(19)提交的代码不能包含不必要的空行(git diff --check),提交的注释用标题+加行+说明的格式(git commit 直接调出文档，
+而不是-m加注释)且imperative mood
 >FAQ:
 ------
 Q:GIT 文件有哪四种状态及状态转移？

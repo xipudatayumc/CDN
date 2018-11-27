@@ -5,8 +5,51 @@
 
 (3)如何在本地显示远程分支？建立跟踪分支？将本地分支push到远程？以及删除远程分支？
 
+(4)git branch是指向commit，其实质是一个包含该commit对象校验和的文件。
 
+(5)git branch [branch_name]建一个分支指向当前commit,git checkout branch_name,切换当前分支(HEAD指针),在你切换分支之前，保持好一个干净的状态.
 
+(6)--cached(--staged) HEAD分别指什么？
+
+(7) git diff [filename]?比较工作区与暂存区; git diff --cached [filename]比较暂存区与上交提交的差异;都是靠近用户的文件在后面。
+（以上都会列出详细变,若只想查看概况加--stat）
+(8)git branch --no-merged,git branch --merged,列出未合并和已合并的分支,如果分支未合并git branch -d删除时会失败。
+(9)分支开发工作流:master,develop,topic;  合并某一个branch的commitgit cherry-pick (commitid1..commitid100]
+   (像pick樱桃一样的小心)
+(10)cherry-pick产生的提交日志中会显示:
+"开发者B" commited with "开发者C" on "某年某月某日"
+问题是: B和C谁才是原始作者呢?
+答案是B是原作者, C是cherry-pick者
+
+(11)合并时若有冲突会有多个commitid，自动合并的一个commitid，解决冲突后又是一个commitid
+(12)git ls-remote (remote)显示远程分支列表,git remote show (remote)显示远程分支的详细信息
+git remote show origin
+* remote origin
+  Fetch URL: https://github.com/xipudatayumc/test.git
+  Push  URL: https://github.com/xipudatayumc/test.git
+  HEAD branch: master
+  Remote branch:
+    master tracked
+  Local branch configured for 'git pull':
+    master merges with remote master
+  Local ref configured for 'git push':
+    master pushes to master (fast-forwardable)
+
+(13)推送本地的serverfix分支来更新远程repository的awesomebranch分支，
+   git push origin serverfix:awesomebranch
+   git push origin refs/heads/serverfix:refs/heads/awesomebranch
+(14)git fetch origin ,(更新远程仓库引用)这个命令查找 “origin” 是哪一个服务器，从中抓取本地没有的数据，并且更新本地数据库，移动 origin/master 指针指向新的、更新后的位置。
+(15) 远程跟踪分支是远程分支状态的引用,它们以 (remote)/(branch) 形式命名,其是只读的不能直接编辑。
+跟踪分支是与远程分支有直接关系的本地分支。 如果在一个跟踪分支上输入 git pull/push，Git 能自动地识别去哪个服务器上抓取、合并到哪个分支。
+
+(16)建立远程跟踪分支: git branch dev origin/master
+设置一个本地分支(当前分支)跟踪一个远程分支:git branch -u [remote_branch],可以通过 @{upstream} 或 @{u} 快捷方式来引用它。
+(17) git branch -vv -a
+  master                7ea67db [origin/master] Initial commit //本地分支及其对应的远程分支
+* test                  fb89f93 [origin/master: ahead 1] first modify on test branch
+  remotes/origin/master 7ea67db Initial commit
+
+(18)git 删除远程branch,git push origin --delete branch_name 
 >FAQ:
 ------
 Q:GIT 文件有哪四种状态及状态转移？
@@ -258,3 +301,224 @@ A: rebase master,即重新以master为基(即把当前进程合并到master进�
 Q:通过git rebase让提交者解决conflict，而不是让code maintainer去解决?
 --------
 A:
+
+
+Q:Git commit时生成的提交对象，是包含_____的指针？
+git add README test.rb LICENSE;git commit -m 'The initial commit of my project'创建的提交对象、树对象？
+-------
+A:我们可以很自然的想到——该提交对象会包含一个指向<<暂存内容快照>>的指针.
+
+
+Q:解释git log --oneline --graph --all的输出:git log --oneline --graph --all
+------------
+* 7ea67db (HEAD -> topic, origin/master, origin/HEAD, master) Initial commit.
+本地有哪些分支？远端有哪些分支？本地的当前分支是？这些分支分别指向哪些提交对象？
+
+
+Q:git log --oneline --graph --all和git log --oneline --graph的区别？
+-------
+A:--all显示所有分支的commit，没有--all只显示当前分支的commit.
+
+
+Q:以下信息表明总共有多少local\remote分支？所有的分支分别指向哪些commit？本地当前分支是？
+(1)
+* aad98da (HEAD -> topic) edit topic branch--1
+* 7ea67db (origin/master, origin/HEAD, master) Initial commit
+(2)
+* aad98da (topic) edit topic branch--1
+* 7ea67db (HEAD -> master, origin/master, origin/HEAD) Initial commit
+
+(3)总共有哪些分支？分别指向哪些commit？本地当前分支为？本地分支是否diverged？当个分支先diverged？
+* c238f33 (HEAD -> master) edit master branch--1
+| * aad98da (topic) edit topic branch--1
+|/
+* 7ea67db (origin/master, origin/HEAD) Initial commit
+
+(4)有哪些分支？分别指向？本地当前分支是？
+* c238f33 (HEAD -> hotfix, master) edit master branch--1
+| * aad98da (topic) edit topic branch--1
+|/
+* 7ea67db (origin/master, origin/HEAD) Initial commit
+
+(5)有哪些分支？分别指向哪些commit？本地当前分支是？
+* 2154097 (HEAD -> hotfix) fix a bug on master branch
+* c238f33 (master) edit master branch--1
+| * aad98da (topic) edit topic branch--1
+|/
+* 7ea67db (origin/master, origin/HEAD) Initial commit
+
+(6)git checkout master
+Switched to branch 'master' //切换到本地master分支
+Your branch is ahead of 'origin/master' by 1 commit.//现在的分支(本地master领先远端master origin/master一个提交)
+  (use "git push" to publish your local commits)//可以通过git push发布local commits(到远端master,origin/master)
+
+(7)git merge hotfix   //(假设HEAD->master,c238f33..2154097)
+Updating c238f33..2154097()//更新master使其指向新的commitid(所提交对象的checksum)
+Fast-forward          //做一次Fast-forward
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+由:
+* 2154097 (hotfix) fix a bug on master branch
+* c238f33 (HEAD -> master) edit master branch--1
+| * aad98da (topic) edit topic branch--1
+|/
+* 7ea67db (origin/master, origin/HEAD) Initial commit
+
+到:
+* 2154097 (HEAD -> master, hotfix) fix a bug on master branch
+* c238f33 edit master branch--1
+| * aad98da (topic) edit topic branch--1
+|/
+* 7ea67db (origin/master, origin/HEAD) Initial commit
+
+(8)git diff HEAD aad98da //表示把HEAD变为aad98da需要减去一行...,加上一行...
+diff --git a/README.md b/README.md  //a/README.md表示HEAD,b/README.md表示aad98da
+index 208e24a..9b7f600 100644
+--- a/README.md   //-表示a/README.md,即HEAD
++++ b/README.md    //+表示b/README.md,即aad98da
+@@ -1,3 +1,3 @@   //-即a/README.md,HEAD的1到3行为#test;   just a test ;和-edit master branch 1. with hotfix
+ # test           //+即a/README.md,aad98da的1到3行为 ...   ...         和+edit topic branch   1.
+ just a test
+-edit master branch 1. with hotfix
++edit topic branch   1.
+
+(9)git merge topic      //没有conflict的文件会自动merge,如topic 分支中新加的topic1文件,有冲突的文件要手动解决conflict
+Auto-merging README.md   //自动合并README.md
+CONFLICT (content): Merge conflict in README.md  //该文件有conflict了
+Automatic merge failed; fix conflicts and then commit the result.
+打开README.md解决conflict:
+
+# test
+just a test
+<<<<<<< HEAD   //HEAD，即当前分支上的文件为：
+edit master branch 1. with hotfix
+=======       //下面为要合并的分支上的文件为:
+edit topic branch   1.
+>>>>>>> topic
+
+合并之前为:
+* 7303cbb (topic) commit topic1  //topic分支
+* aad98da edit topic branch--1
+| * 2154097 (HEAD -> master) fix a bug on master branch  //master分支
+| * c238f33 edit master branch--1
+|/
+* 7ea67db (origin/master, origin/HEAD) Initial commit
+合并之后为:
+*   c2f8689 (HEAD -> master) merge branch topic with file topic1  //在master分支上合并topic分支
+|\
+| * 7303cbb (topic) commit topic1
+| * aad98da edit topic branch--1
+* | 2154097 fix a bug on master branch
+* | c238f33 edit master branch--1
+|/
+* 7ea67db (origin/master, origin/HEAD) Initial commit
+删除原来的topic分支(分支只是一个指针，指向某个commitid)：
+*   c2f8689 (HEAD -> master) merge branch topic with file topic1
+|\
+| * 7303cbb commit topic1
+| * aad98da edit topic branch--1
+* | 2154097 fix a bug on master branch
+* | c238f33 edit master branch--1
+|/
+* 7ea67db (origin/master, origin/HEAD) Initial commit
+
+(10)当前有几个分支，每一个分支指向哪个commit，commitid "8e11cbe"属于哪个分支
+* 9b14b5b (HEAD -> develop) add a line develop 2 to topic1
+* 8e11cbe add a line develop1 to file topic1
+*   c2f8689 (master) merge branch topic with file topic1
+|\
+| * 7303cbb commit topic1
+| * aad98da edit topic branch--1
+* | 2154097 fix a bug on master branch
+* | c238f33 edit master branch--1
+|/
+* 7ea67db (origin/master, origin/HEAD) Initial commit
+
+(11)有多少个分支？每个分支指向哪个commit？当前分支是？
+* 9fc719b (HEAD -> experiment) add a line experiment3 to file experiment
+* 154f225 add a line experiment1 to file experiment
+* 87cfb87 touch file experiment and add a line experiment1 to it
+* 9b14b5b (develop) add a line develop 2 to topic1
+* 8e11cbe add a line develop1 to file topic1
+*   c2f8689 (master) merge branch topic with file topic1
+|\
+| * 7303cbb commit topic1
+| * aad98da edit topic branch--1
+* | 2154097 fix a bug on master branch
+* | c238f33 edit master branch--1
+|/
+* 7ea67db (origin/master, origin/HEAD) Initial commit
+1)git checkout develop; git cherry-pick 9b14b5b..154f225
+* bebeef9 (HEAD -> develop) add a line experiment1 to file experiment
+* 9b7adde touch file experiment and add a line experiment1 to it //cherry-pick了两个commit,作为develop分支的一个新的commit
+| * 9fc719b (experiment) add a line experiment3 to file experiment
+| * 154f225 add a line experiment1 to file experiment
+| * 87cfb87 touch file experiment and add a line experiment1 to it
+|/
+* 9b14b5b add a line develop 2 to topic1
+* 8e11cbe add a line develop1 to file topic1
+*   c2f8689 (master) merge branch topic with file topic1
+|\
+| * 7303cbb commit topic1
+| * aad98da edit topic branch--1
+* | 2154097 fix a bug on master branch
+* | c238f33 edit master branch--1
+|/
+* 7ea67db (origin/master, origin/HEAD) Initial commit
+
+(12)合并分支一个commitid,若有冲突解决conflict后提交又是一个commitid
+*   b73bea1 (HEAD -> master) Merge branch 'develop'
+|\
+| * bebeef9 (develop) add a line experiment1 to file experiment
+| * 9b7adde touch file experiment and add a line experiment1 to it
+* | e5a9a85 add a line develop 2 to topic1
+* | 32eaadb add a line develop1 to file topic1
+| | * 9fc719b (experiment) add a line experiment3 to file experiment
+| | * 154f225 add a line experiment1 to file experiment
+| | * 87cfb87 touch file experiment and add a line experiment1 to it
+| |/
+| * 9b14b5b add a line develop 2 to topic1
+| * 8e11cbe add a line develop1 to file topic1
+|/
+*   c2f8689 merge branch topic with file topic1
+|\
+| * 7303cbb commit topic1
+| * aad98da edit topic branch--1
+* | 2154097 fix a bug on master branch
+* | c238f33 edit master branch--1
+|/
+* 7ea67db (origin/master, origin/HEAD) Initial commit
+合并手动解决冲突：
+*   863208f (HEAD -> master) settle merging conflict
+|\
+| * 9fc719b (experiment) add a line experiment3 to file experiment
+| * 154f225 add a line experiment1 to file experiment
+| * 87cfb87 touch file experiment and add a line experiment1 to it
+* |   b73bea1 Merge branch 'develop'
+|\ \
+| * | bebeef9 (develop) add a line experiment1 to file experiment
+| * | 9b7adde touch file experiment and add a line experiment1 to it
+| |/
+| * 9b14b5b add a line develop 2 to topic1
+| * 8e11cbe add a line develop1 to file topic1
+* | e5a9a85 add a line develop 2 to topic1
+* | 32eaadb add a line develop1 to file topic1
+|/
+*   c2f8689 merge branch topic with file topic1
+|\
+| * 7303cbb commit topic1
+| * aad98da edit topic branch--1
+* | 2154097 fix a bug on master branch
+* | c238f33 edit master branch--1
+|/
+* 7ea67db (origin/master, origin/HEAD) Initial commit
+
+(13)git branch -vv
+  iss53     7e424c3 [origin/iss53: ahead 2] forgot the brackets 
+  master    1ae2a45 [origin/master] deploying index fix
+* serverfix f8674d9 [teamone/server-fix-good: ahead 3, behind 1] this should do it
+  testing   5ea463a trying something new
+这里可以看到 iss53 分支正在跟踪 origin/iss53 并且 “ahead” 是 2，意味着本地有两个提交还没有推送到服务器上。 也能看到 master 分支正在跟踪 origin/master 分支并且是最新的。 接下来可以看到 serverfix 分支正在跟踪 teamone 服务器上的 server-fix-good 分支并且领先 3 落后 1，意味着服务器上有一次提交还没有合并入同时本地有三次提交还没有推送。 最后看到 testing 分支并没有跟踪任何远程分支。
+
+
